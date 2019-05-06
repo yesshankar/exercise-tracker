@@ -1,0 +1,27 @@
+{
+  "name": "exercise-tracker",
+  "version": "1.0.0",
+  "description": "A REST API project, part of Free Code Camp's curriculum",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yesshankar/exercise-tracker.git"
+  },
+  "author": "\"Shankar Khatri\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yesshankar/exercise-tracker/issues"
+  },
+  "homepage": "https://github.com/yesshankar/exercise-tracker#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.5",
+    "shortid": "^2.2.14"
+  }
+}
