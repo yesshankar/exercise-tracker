@@ -61,7 +61,7 @@ app.post('/api/exercise/add', (req, res) => {
   let userId = req.body.userId;
   let description = req.body.description;
   let duration = req.body.duration;
-  let date = new Date(req.body.date).toDateString();
+  let date = new Date(req.body.date.replace(/-/g, '\/')).toDateString();
 
   User.findOneAndUpdate({ _id: userId },
     { 
@@ -80,20 +80,52 @@ app.post('/api/exercise/add', (req, res) => {
 
     });
 
-    /* if(err) res.json({"error": err});
-
-    if(data.length == 0){
-      res.json(["invalid userId"]);
-    }else{
-
-    } */
-
 })
 
 app.get('/api/exercise/log', (req, res) => {
 
+  let userId = req.query.userId;
+  let from = req.query.from;
+  let to= req.query.to;
+  let limit = parseInt(req.query.limit);
+
+  if(!userId) res.json(["userId required in query parameter!"]);
+
+  /* let query = { _id: userId };
+
+  if(from && to){
+    query.log = { $elemMatch: { date: { $get: new Date(from).toDateString(), $lt: new Date(from).toDateString() } } }
+  }else{
+
+    if(from) query.log = { $elemMatch: { date: { $get: new Date(from).toDateString() } } }
+    if(to) query.log = { $elemMatch: { date: { $lt: new Date(from).toDateString() } } }
+  }
+  console.log(`query: ${query}`); */
+
+  User.find({ _id: userId }, (err, data) => {
+    if(err) res.json({ "error": err });
+
+    if(data.length == 0){
+      res.json(["userId not found!"]);
+    }else{
+
+      if(from){
+        data[0].log = data[0].log.filter((item) => { return new Date(item.date).getTime() > new Date(from).getTime() });
+      }
+      if(to){
+        data[0].log = data[0].log.filter((item) => { return new Date(item.date).getTime() < new Date(from).getTime() });
+      }
+      if(limit){
+        data[0].log = data[0].log.slice(0, limit);
+      }
+
+      res.json(data);
+    } 
+
+  });
 
 })
+
 
 // Not found middleware
 app.use((req, res, next) => {
