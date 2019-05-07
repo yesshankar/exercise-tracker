@@ -10,7 +10,7 @@ mongoose.set('useFindAndModify', false);  // to aviod deprecation warning
 
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
-// app.use(express.json())
+app.use(express.json())
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
